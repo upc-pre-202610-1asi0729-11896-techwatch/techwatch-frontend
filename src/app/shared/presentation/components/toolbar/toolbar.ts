@@ -7,7 +7,6 @@ import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-toolbar',
   imports: [
-    RouterOutlet,
     RouterLink,
     MatToolbarModule,
     MatButtonModule,
@@ -19,7 +18,7 @@ import {MatButtonModule} from '@angular/material/button';
 export class Toolbar {
   options = signal([
     {link: '/home',                 label: 'Home'},
-    {link: '/mangament/homes',      label: 'Homes'},
-    {link: '/mangament/devices',    label: 'Devices'}
+    {link: '/managament/homes',      label: 'Homes'},
+    {link: '/managament/devices',   label: 'Devices'}
   ]);
 }
