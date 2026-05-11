@@ -1,0 +1,46 @@
+import {BaseEntity} from '../../../../shared/interface/base-entity';
+import {HomeEntity} from '../home/home-entity';
+
+export class DeviceEntity {
+  private  _id: number;
+  private  _name: string;
+  private  _type: string;
+  private  _powerWatts: number;
+  private  _homeId: number;
+  private  _home: HomeEntity | null;
+
+  constructor(homes: {
+    id: number;
+    name: string;
+    type: string;
+    powerWatts: number;
+    homeId: number;
+    home?: HomeEntity | null;
+  }) {
+
+    this._id = homes.id;
+    this._name = homes.name;
+    this._type = homes.type;
+    this._powerWatts = homes.powerWatts;
+    this._homeId = homes.homeId;
+    this._home = homes.home ?? null;
+  }
+
+  get id(): number {return this._id;}
+  set id(value: number) {this._id = value;}
+
+  get name(): string {return this._name;}
+  set name(value: string) {this._name = value;}
+
+  get type(): string {return this._type;}
+  set type(value: string) {this._type = value;}
+
+  get powerWatts(): number {return this._powerWatts;}
+  set powerWatts(value: number) {this._powerWatts = value;}
+
+  get homeId(): number {return this._homeId;}
+  set homeId(value: number) {this._homeId = value;}
+
+  get home(): HomeEntity | null {return this._home;}
+  set home(value: HomeEntity | null) {this._home = value;}
+}
