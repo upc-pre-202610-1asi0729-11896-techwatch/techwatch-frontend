@@ -1,0 +1,121 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Carlos Pérez",
+      "email": "carlos@techwatch.com",
+      "password": "123456",
+      "plan": "free",
+      "createdAt": "2026-05-01"
+    },
+    {
+      "id": 2,
+      "name": "Ana López",
+      "email": "ana@techwatch.com",
+      "password": "123456",
+      "plan": "premium",
+      "subscription": {
+        "startedAt": "2026-05-10",
+        "expiresAt": "2026-06-10"
+      },
+      "createdAt": "2026-05-02"
+    }
+  ],
+
+  "homes": [
+    {
+      "id": 1,
+      "name": "Departamento Miraflores",
+      "type": "apartment",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "name": "Casa Surco",
+      "type": "house",
+      "userId": 2
+    }
+  ],
+
+  "devices": [
+    {
+      "id": 1,
+      "name": "Aire acondicionado sala",
+      "type": "climate",
+      "powerWatts": 1200,
+      "status": "on",
+      "homeId": 1
+    },
+    {
+      "id": 2,
+      "name": "Refrigeradora",
+      "type": "kitchen",
+      "powerWatts": 300,
+      "status": "on",
+      "homeId": 1
+    },
+    {
+      "id": 3,
+      "name": "Televisor",
+      "type": "entertainment",
+      "powerWatts": 150,
+      "status": "off",
+      "homeId": 1
+    },
+    {
+      "id": 4,
+      "name": "Luces sala",
+      "type": "lighting",
+      "powerWatts": 60,
+      "status": "on",
+      "homeId": 2
+    },
+    {
+      "id": 5,
+      "name": "Aire acondicionado dormitorio",
+      "type": "climate",
+      "powerWatts": 1000,
+      "status": "on",
+      "homeId": 2
+    }
+  ],
+
+  "consumptions": [
+    {
+      "id": 1,
+      "deviceId": 1,
+      "kwh": 2.4,
+      "date": "2026-05-01"
+    },
+    {
+      "id": 2,
+      "deviceId": 1,
+      "kwh": 2.8,
+      "date": "2026-05-02"
+    },
+    {
+      "id": 3,
+      "deviceId": 2,
+      "kwh": 1.1,
+      "date": "2026-05-01"
+    },
+    {
+      "id": 4,
+      "deviceId": 3,
+      "kwh": 0.0,
+      "date": "2026-05-01"
+    },
+    {
+      "id": 5,
+      "deviceId": 4,
+      "kwh": 0.6,
+      "date": "2026-05-01"
+    },
+    {
+      "id": 6,
+      "deviceId": 5,
+      "kwh": 2.1,
+      "date": "2026-05-02"
+    }
+  ]
+}
