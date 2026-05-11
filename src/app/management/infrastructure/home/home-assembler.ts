@@ -4,6 +4,8 @@ import {HomeResponse} from './home-response';
 import {BaseAssembler} from '../../../shared/interface/base-assembler';
 
 export class HomeAssembler implements BaseAssembler<HomeEntity, HomeResource, HomeResponse>{
+
+
   toEntityFromResource(resource: HomeResource): HomeEntity {
     return new HomeEntity({
       id: resource.id,
@@ -22,8 +24,6 @@ export class HomeAssembler implements BaseAssembler<HomeEntity, HomeResource, Ho
   }
   toEntitiesFromResponse(response: HomeResponse): HomeEntity[] {
     console.log(response);
-    return response.homes.map((resource)=>
-      this.toEntityFromResource(resource as HomeResource))
-
+    return response.homes.map(resource=> this.toEntityFromResource(resource as HomeResource));
   }
 }

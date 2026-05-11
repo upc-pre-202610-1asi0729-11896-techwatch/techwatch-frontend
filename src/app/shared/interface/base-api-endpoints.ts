@@ -5,6 +5,7 @@ import {BaseEntity} from './base-entity';
 import {BaseResource} from './base-resource';
 import {BaseResponse} from './base-response';
 import {BaseAssembler} from './base-assembler';
+import {resource} from '@angular/core';
 
 export class BaseApiEndpoints<
   Tentity extends BaseEntity,
@@ -22,7 +23,9 @@ export class BaseApiEndpoints<
     return this.http.get<Tresponse | Tresource[]>(this.endpointUrl).pipe(
       map(response=>{
         console.log(response);
-
+        if(Array.isArray(response)){
+          return response.map(resource=>this.assembler.toEntityFromResource(resource))
+        }
         return this.assembler.toEntitiesFromResponse(response as Tresponse)
       }),
       catchError(this.handleError('Failed to fetch entities'))
