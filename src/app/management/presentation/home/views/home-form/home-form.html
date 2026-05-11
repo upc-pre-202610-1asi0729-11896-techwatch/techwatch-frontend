@@ -1,0 +1,13 @@
+<h1 class="title">{{ (isEdit ? 'Edit Home' : 'New Home')}}</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required>
+    @if (form.get('name')!.touched && form.get('name')!.hasError('required')) {
+      <mat-error>Name Required</mat-error>
+    }
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    {{ (isEdit ? 'Update Home'  : 'Create Home')}}
+  </button>
+</form>

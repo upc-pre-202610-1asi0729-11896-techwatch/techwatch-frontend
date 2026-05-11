@@ -22,7 +22,7 @@ export class HomeList implements AfterViewChecked {
   protected router = inject(Router);
 
 
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'type','actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

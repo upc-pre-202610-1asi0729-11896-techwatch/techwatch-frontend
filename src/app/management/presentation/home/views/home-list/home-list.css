@@ -1,0 +1,14 @@
+.title {
+  margin: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-table {
+  width: 100%;
+  margin-bottom: 16px;
+  overflow: auto;
+  padding: 16px;
+  box-sizing: border-box;
+}
