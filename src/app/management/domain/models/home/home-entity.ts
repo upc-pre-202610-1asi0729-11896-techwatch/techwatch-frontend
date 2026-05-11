@@ -1,5 +1,6 @@
+import {BaseEntity} from '../../../../shared/interface/base-entity';
 
-export class HomeEntity {
+export class HomeEntity implements BaseEntity{
   private readonly _id: number;
   private readonly _name: string;
   private readonly _type: string;

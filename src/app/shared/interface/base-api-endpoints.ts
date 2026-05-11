@@ -29,6 +29,35 @@ export class BaseApiEndpoints<
     );
   }
 
+  getById(id: number): Observable<Tentity> {
+    return this.http.get<Tresource>(`${this.endpointUrl}/${id}`).pipe(
+      map(resource => this.assembler.toEntityFromResource(resource)),
+      catchError(this.handleError('Failed to fetch entity'))
+    );
+  }
+
+  create(entity: Tentity): Observable<Tentity> {
+    const resource = this.assembler.toResourceFromEntity(entity);
+    return this.http.post<Tresource>(this.endpointUrl, resource).pipe(
+      map(created => this.assembler.toEntityFromResource(created)),
+      catchError(this.handleError('Failed to create entity'))
+    );
+  }
+
+  update(entity: Tentity, id: number): Observable<Tentity> {
+    const resource = this.assembler.toResourceFromEntity(entity);
+    return this.http.put<Tresource>(`${this.endpointUrl}/${id}`, resource).pipe(
+      map(updated => this.assembler.toEntityFromResource(updated)),
+      catchError(this.handleError('Failed to update entity'))
+    );
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.endpointUrl}/${id}`).pipe(
+      catchError(this.handleError('Failed to delete entity'))
+    );
+  }
+
   protected handleError(operation: string){
     return (errors: HttpErrorResponse): Observable<never> => {
       let errorMessage = operation;
