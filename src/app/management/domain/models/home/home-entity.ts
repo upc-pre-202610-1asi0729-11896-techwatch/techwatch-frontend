@@ -1,10 +1,10 @@
 import {BaseEntity} from '../../../../shared/interface/base-entity';
 
 export class HomeEntity implements BaseEntity{
-  private readonly _id: number;
-  private readonly _name: string;
-  private readonly _type: string;
-  private readonly _userId: number;
+  private  _id: number;
+  private  _name: string;
+  private  _type: string;
+  private  _userId: number;
 
   constructor(homes: {
     id: number;
@@ -19,19 +19,16 @@ export class HomeEntity implements BaseEntity{
     this._userId = homes.userId;
   }
 
-  get id(): number {
-    return this._id;
-  }
+  get id(): number {return this._id;}
+  set id(value: number) {this._id = value;}
 
-  get name(): string {
-    return this._name;
-  }
 
-  get type(): string {
-    return this._type;
-  }
+  get name(): string {return this._name;}
+  set name(value: string) {this._name = value;}
 
-  get userId(): number {
-    return this._userId;
-  }
+  get type(): string {return this._type;}
+  set type(value: string) {this._type = value;}
+
+  get userId(): number {return this._userId;}
+  set userId(value: number) {this._userId = value;}
 }
