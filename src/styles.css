@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, Inter, 'Segoe UI', sans-serif;
+  background: #f5f7fa;
+}
+
+/* Material table white background on grey page */
+.mat-mdc-table {
+  background: #ffffff !important;
+}
+
+.mat-mdc-header-row {
+  background: #f9fafb !important;
+}
+
+/* Paginator fixed at the bottom of the content area */
+.mat-mdc-paginator {
+  background: #ffffff !important;
+  border-top: 1px solid #e5e7eb;
+  position: fixed;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  z-index: 10;
+}

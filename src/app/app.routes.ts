@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import {Home} from './shared/presentation/views/home/home';
 
-const managementRoutes = () => import('./management/presentation/management-routes').then(m=>m.managementRoutes);
+const managementRoutes = () => import('./management/presentation/management-routes').then(m => m.managementRoutes);
+const analyticsRoutes = () => import('./analytics/presentation/analytics.routes').then(m => m.analyticsRoutes);
 
 export const routes: Routes = [
-  { path: 'home',         component:        Home,},
-  { path: 'managament',   loadChildren:     managementRoutes},
-  { path: '',             redirectTo:       '/home',            pathMatch: 'full'  },
+  { path: 'management',  loadChildren: managementRoutes },
+  { path: 'analytics',   loadChildren: analyticsRoutes },
+  { path: '',            redirectTo: '/management/devices', pathMatch: 'full' },
 ];
