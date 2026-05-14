@@ -10,7 +10,7 @@ import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 
 import {AnalyticsStore} from '../../../application/analytics.store';
-import {ManagementStore} from '../../../../management/aplication/mangament-store';
+import {ManagementStore} from '../../../../management/application/mangament-store';
 
 interface DeviceSummary {
   deviceId: number;
