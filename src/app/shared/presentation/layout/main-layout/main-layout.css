@@ -16,23 +16,16 @@
 
 .sidebar-brand {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 20px 16px 24px;
+  justify-content: center;
+  padding: 20px 12px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .brand-icon {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-
-.brand-name {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.02em;
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  object-fit: contain;
 }
 
 .sidebar-nav {
