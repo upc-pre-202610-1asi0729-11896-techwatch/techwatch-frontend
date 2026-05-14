@@ -2,7 +2,7 @@ import {AfterViewChecked, Component, computed, inject, ViewChild} from '@angular
 import {Router} from '@angular/router';
 import {MatError} from '@angular/material/form-field';
 
-import {MangamentStore} from '../../../../aplication/mangament-store';
+import {MangamentStore} from '../../../../application/mangament-store';
 
 import {
   MatCell,
