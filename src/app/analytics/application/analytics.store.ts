@@ -3,7 +3,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Consumption} from '../domain/model/consumption.entity';
 import {AnalyticsApi} from '../infrastructure/analytics-api';
-import {ManagementStore} from '../../management/aplication/mangament-store';
+import {ManagementStore} from '../../management/application/mangament-store';
 
 @Injectable({
   providedIn: 'root',

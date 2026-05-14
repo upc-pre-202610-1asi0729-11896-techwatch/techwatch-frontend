@@ -8,7 +8,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 
-import {ManagementStore} from '../../../../aplication/mangament-store';
+import {ManagementStore} from '../../../../application/mangament-store';
 import {HomeEntity} from '../../../../domain/models/home/home-entity';
 
 @Component({

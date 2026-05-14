@@ -8,7 +8,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 
-import {ManagementStore} from '../../../../aplication/mangament-store';
+import {ManagementStore} from '../../../../application/mangament-store';
 
 
 @Component({

@@ -13,7 +13,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 
-import {ManagementStore} from '../../../../aplication/mangament-store';
+import {ManagementStore} from '../../../../application/mangament-store';
 
 @Component({
   selector: 'app-device-list',
