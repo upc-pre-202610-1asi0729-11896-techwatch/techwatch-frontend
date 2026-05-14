@@ -8,7 +8,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 
-import {MangamentStore} from '../../../../aplication/mangament-store';
+import {ManagementStore} from '../../../../aplication/mangament-store';
 
 
 @Component({
@@ -18,7 +18,7 @@ import {MangamentStore} from '../../../../aplication/mangament-store';
   styleUrl: './home-list.css',
 })
 export class HomeList implements AfterViewChecked {
-  readonly store = inject(MangamentStore);
+  readonly store = inject(ManagementStore);
   protected router = inject(Router);
 
 
@@ -35,7 +35,7 @@ export class HomeList implements AfterViewChecked {
   });
 
   editHome(id: number) {
-    this.router.navigate(['managament/homes', id, 'edit']).then();
+    this.router.navigate(['/management/homes', id, 'edit']);
   }
 
   deleteHome(id: number) {
@@ -43,7 +43,7 @@ export class HomeList implements AfterViewChecked {
   }
 
   navigateToNew() {
-    this.router.navigate(['managament/homes/new']).then();
+    this.router.navigate(['/management/homes/new']);
   }
 
   ngAfterViewChecked() {
