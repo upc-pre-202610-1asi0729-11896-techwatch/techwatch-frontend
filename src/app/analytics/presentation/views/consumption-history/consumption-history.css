@@ -1,7 +1,4 @@
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 24px;
 }
 
@@ -18,9 +15,9 @@
   margin: 0;
 }
 
-.homes-table {
+.history-table {
   width: 100%;
-  margin-bottom: 16px;
   border-radius: 8px;
   overflow: hidden;
+  margin-bottom: 8px;
 }

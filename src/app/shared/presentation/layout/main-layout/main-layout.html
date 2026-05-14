@@ -1,2 +1,30 @@
-<app-toolbar></app-toolbar>
-<router-outlet></router-outlet>
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <img src="/imagotipo.jpeg" alt="TechWatch" class="brand-icon">
+    </div>
+
+    <div class="sidebar-nav">
+      <a class="nav-link" routerLink="/management/devices" routerLinkActive="active">
+        <mat-icon class="nav-icon">devices</mat-icon>
+        <span>Device Management</span>
+      </a>
+      <a class="nav-link" routerLink="/management/homes" routerLinkActive="active">
+        <mat-icon class="nav-icon">home</mat-icon>
+        <span>Homes</span>
+      </a>
+      <a class="nav-link" routerLink="/analytics/dashboard" routerLinkActive="active">
+        <mat-icon class="nav-icon">bar_chart</mat-icon>
+        <span>Analytics</span>
+      </a>
+      <a class="nav-link" routerLink="/analytics/history" routerLinkActive="active">
+        <mat-icon class="nav-icon">history</mat-icon>
+        <span>History</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
