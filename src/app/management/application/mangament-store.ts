@@ -120,8 +120,8 @@ export class MangamentStore {
     });
   }
 
-  getDevicesById(id: number): Signal<HomeEntity | undefined> {
-    return computed(() => id ? this.homes().find(c => c.id === id) : undefined);
+  getDevicesById(id: number): Signal<DeviceEntity | undefined> {
+    return computed(() => id ? this.devices().find(c => c.id === id) : undefined);
   }
 
   private assignHomeToDevice(devices: DeviceEntity): DeviceEntity {
