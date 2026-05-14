@@ -7,6 +7,27 @@
       <mat-error>Name Required</mat-error>
     }
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Type</mat-label>
+    <input matInput formControlName="type" required>
+
+    @if (form.get('type')?.touched && form.get('type')?.hasError('required')) {
+      <mat-error>Type Required</mat-error>
+    }
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label>User ID</mat-label>
+    <input matInput type="number" formControlName="userId" required>
+
+    @if (form.get('userId')?.touched && form.get('userId')?.hasError('required')) {
+      <mat-error>User ID Required</mat-error>
+    }
+  </mat-form-field>
+
+
   <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
     {{ (isEdit ? 'Update Home'  : 'Create Home')}}
   </button>
