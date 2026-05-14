@@ -2,7 +2,7 @@ import {AfterViewChecked, Component, computed, inject, ViewChild} from '@angular
 import {Router} from '@angular/router';
 import {MatError} from '@angular/material/form-field';
 
-import {MangamentStore} from '../../../../aplication/mangament-store';
+import {MangamentStore} from '../../../../application/mangament-store';
 
 import {
   MatCell,
@@ -52,7 +52,7 @@ export class DeviceList implements AfterViewChecked{
   readonly store = inject(MangamentStore);
   protected router = inject(Router);
 
-  displayedColumns: string[] = ['id', 'name', 'powerWatts', 'status', 'homeId','actions'];
+  displayedColumns: string[] = ['id', 'name', 'powerWatts', 'homeId','actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

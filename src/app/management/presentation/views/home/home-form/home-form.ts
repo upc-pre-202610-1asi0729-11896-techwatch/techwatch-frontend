@@ -7,7 +7,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 
-import {MangamentStore} from '../../../../aplication/mangament-store';
+import {MangamentStore} from '../../../../application/mangament-store';
 import {HomeEntity} from '../../../../domain/models/home/home-entity';
 
 @Component({
@@ -54,7 +54,7 @@ export class HomeForm {
       id: this.homeId ?? 0,
       name: this.form.value.name!,
       type: this.form.value.type!,
-      userId: this.userId ?? 0,
+      userId: this.form.value.userId ?? 0,
     });
 
     if (this.isEdit) {
@@ -63,6 +63,6 @@ export class HomeForm {
       this.store.addHome(home);
     }
 
-    this.router.navigate(['managament/home']).then();
+    this.router.navigate(['managament/homes']).then();
   }
 }
