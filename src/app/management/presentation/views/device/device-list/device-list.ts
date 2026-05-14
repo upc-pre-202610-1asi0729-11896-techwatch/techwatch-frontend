@@ -52,7 +52,7 @@ export class DeviceList implements AfterViewChecked{
   readonly store = inject(MangamentStore);
   protected router = inject(Router);
 
-  displayedColumns: string[] = ['id', 'name', 'powerWatts', 'status', 'homeId','actions'];
+  displayedColumns: string[] = ['id', 'name', 'powerWatts', 'homeId','actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
