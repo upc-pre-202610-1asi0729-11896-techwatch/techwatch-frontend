@@ -1,9 +1,12 @@
 export const environment = {
   production: false,
-  providerApiBaseUrl: 'https://mock-api-lc-json-production.up.railway.app',
-  providerHomeEndPointPath: '/homes',
-  providerDeviceEndPointPath: '/devices',
-  providerConsumptionsEndPointPath: '/consumptions',
-  logoProviderApiBaseUrl: 'https://img.logo.dev/',
-  logoProviderPublishableKey: 'pk_MaaysUc_QNaCWpZNw7k5UA',
+  // In development the requests go through the ng serve proxy (proxy.conf.json),
+  // which forwards /api to the Spring Boot backend at http://localhost:8080.
+  apiBaseUrl: '/api/v1',
+  propertiesEndpointPath: '/properties',
+  devicesEndpointPath: '/devices',
+  simulationSessionsEndpointPath: '/simulation-sessions',
+  metricsEndpointPath: '/metrics',
+  alertsEndpointPath: '/alerts',
+  reportsEndpointPath: '/reports',
 };

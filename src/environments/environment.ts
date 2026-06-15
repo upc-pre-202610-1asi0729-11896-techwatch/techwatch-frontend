@@ -1,9 +1,11 @@
 export const environment = {
   production: true,
-  providerApiBaseUrl: 'https://mock-api-lc-json-production.up.railway.app/api/v1',
-  providerHomeEndPointPath: '/homes',
-  providerDeviceEndPointPath: '/devices',
-  providerConsumptionsEndPointPath: '/consumptions',
-  logoProviderApiBaseUrl: 'https://img.logo.dev/',
-  logoProviderPublishableKey: 'pk_MaaysUc_QNaCWpZNw7k5UA',
+  // Production build talks to the backend directly (no dev-server proxy).
+  apiBaseUrl: 'http://localhost:8080/api/v1',
+  propertiesEndpointPath: '/properties',
+  devicesEndpointPath: '/devices',
+  simulationSessionsEndpointPath: '/simulation-sessions',
+  metricsEndpointPath: '/metrics',
+  alertsEndpointPath: '/alerts',
+  reportsEndpointPath: '/reports',
 };
