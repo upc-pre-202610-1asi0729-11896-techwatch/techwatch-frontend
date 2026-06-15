@@ -8,42 +8,36 @@ import {MatIcon} from '@angular/material/icon';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 
-import {ManagementStore} from '../../../../application/mangament-store';
-
+import {ManagementStore} from '../../../../application/management-store';
 
 @Component({
-  selector: 'app-home-list',
+  selector: 'app-property-list',
   imports: [MatTableModule, MatButtonModule, MatError, MatProgressSpinner, MatIcon, MatPaginator, MatSort, MatSortHeader],
-  templateUrl: './home-list.html',
-  styleUrl: './home-list.css',
+  templateUrl: './property-list.html',
+  styleUrl: './property-list.css',
 })
-export class HomeList implements AfterViewChecked {
+export class PropertyList implements AfterViewChecked {
   readonly store = inject(ManagementStore);
   protected router = inject(Router);
 
-
-  displayedColumns: string[] = ['id', 'name', 'type','actions'];
+  displayedColumns: string[] = ['id', 'name', 'address', 'type', 'spaces', 'actions'];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = computed(() => {
-    const source = new MatTableDataSource(this.store.homes());
+    const source = new MatTableDataSource(this.store.properties());
     source.sort = this.sort;
     source.paginator = this.paginator;
     return source;
   });
 
-  editHome(id: number) {
-    this.router.navigate(['/management/homes', id, 'edit']);
-  }
-
-  deleteHome(id: number) {
-    this.store.deleteHome(id);
+  openProperty(id: number) {
+    this.router.navigate(['/management/properties', id]);
   }
 
   navigateToNew() {
-    this.router.navigate(['/management/homes/new']);
+    this.router.navigate(['/management/properties/new']);
   }
 
   ngAfterViewChecked() {

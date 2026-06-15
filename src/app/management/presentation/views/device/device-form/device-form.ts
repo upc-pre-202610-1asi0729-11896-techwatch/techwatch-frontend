@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {TitleCasePipe} from '@angular/common';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -8,8 +8,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 
-import {ManagementStore} from '../../../../application/mangament-store';
-import {DeviceEntity} from '../../../../domain/models/device/device-entity';
+import {ManagementStore} from '../../../../application/management-store';
+import {DeviceEntity, DeviceType} from '../../../../domain/models/device/device-entity';
 
 @Component({
   selector: 'app-device-form',
@@ -23,37 +23,35 @@ export class DeviceForm {
   private router = inject(Router);
   readonly store = inject(ManagementStore);
 
-  readonly deviceTypes = ['climate', 'lighting', 'entertainment', 'kitchen'];
-  readonly statusOptions = ['on', 'off'];
+  readonly deviceTypes: DeviceType[] = ['LIGHT', 'THERMOSTAT', 'CAMERA', 'SMART_PLUG', 'AIR_CONDITIONER', 'DOOR_LOCK'];
+
+  readonly propertyId = +this.route.snapshot.params['propertyId'];
+  readonly spaceId = +this.route.snapshot.params['spaceId'];
+  deviceId: number | null = this.route.snapshot.params['deviceId'] ? +this.route.snapshot.params['deviceId'] : null;
+  isEdit = this.deviceId !== null;
 
   form = this.fb.group({
-    name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    type: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    powerWatts: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(0)] }),
-    status: new FormControl<string>('off', { nonNullable: true, validators: [Validators.required] }),
-    homeId: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
+    name: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
+    brand: new FormControl<string>('', {nonNullable: true}),
+    model: new FormControl<string>('', {nonNullable: true}),
+    type: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
+    powerWatts: new FormControl<number>(0, {nonNullable: true, validators: [Validators.required, Validators.min(0)]}),
   });
 
-  isEdit = false;
-  deviceId: number | null = null;
-
   constructor() {
-    this.route.params.subscribe(params => {
-      this.deviceId = params['id'] ? +params['id'] : null;
-      this.isEdit = !!this.deviceId;
-      if (this.isEdit && this.deviceId) {
-        const device = this.store.getDeviceById(this.deviceId)();
-        if (device) {
-          this.form.patchValue({
-            name: device.name,
-            type: device.type,
-            powerWatts: device.powerWatts,
-            status: device.status,
-            homeId: device.homeId,
-          });
+    if (this.isEdit && this.deviceId) {
+      // Devices for this space may not be loaded yet (e.g. on a hard refresh).
+      this.store.loadDevicesBySpace(this.spaceId);
+      const device = this.store.getDeviceById(this.deviceId);
+      let patched = false;
+      effect(() => {
+        const found = device();
+        if (found && !patched) {
+          this.patchForm(found);
+          patched = true;
         }
-      }
-    });
+      });
+    }
   }
 
   submit() {
@@ -61,23 +59,35 @@ export class DeviceForm {
 
     const device = new DeviceEntity({
       id: this.deviceId ?? 0,
+      spaceId: this.spaceId,
       name: this.form.value.name!,
+      brand: this.form.value.brand ?? '',
+      model: this.form.value.model ?? '',
       type: this.form.value.type!,
+      status: 'OFF',
       powerWatts: this.form.value.powerWatts!,
-      status: this.form.value.status!,
-      homeId: this.form.value.homeId!,
     });
 
     if (this.isEdit) {
       this.store.updateDevice(device);
     } else {
-      this.store.addDevices(device);
+      this.store.addDevice(device);
     }
 
-    this.router.navigate(['/management/devices']);
+    this.back();
   }
 
-  cancel() {
-    this.router.navigate(['/management/devices']);
+  back() {
+    this.router.navigate(['/management/properties', this.propertyId]);
+  }
+
+  private patchForm(device: DeviceEntity): void {
+    this.form.patchValue({
+      name: device.name,
+      brand: device.brand,
+      model: device.model,
+      type: device.type,
+      powerWatts: device.powerWatts,
+    });
   }
 }
