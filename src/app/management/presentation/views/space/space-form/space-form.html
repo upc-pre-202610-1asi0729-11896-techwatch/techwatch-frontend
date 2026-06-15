@@ -1,0 +1,23 @@
+<div class="form-container">
+  <h2 class="form-title">New Space</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="e.g. Living Room">
+      @if (form.get('name')!.touched && form.get('name')!.hasError('required')) {
+        <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" placeholder="e.g. Main floor living room">
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-stroked-button type="button" (click)="back()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Create</button>
+    </div>
+  </form>
+</div>

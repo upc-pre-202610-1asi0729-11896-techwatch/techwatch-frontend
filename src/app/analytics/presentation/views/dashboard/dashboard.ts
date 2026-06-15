@@ -1,82 +1,59 @@
-import {AfterViewChecked, Component, computed, inject, ViewChild} from '@angular/core';
-import {
-  MatCell, MatCellDef, MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource
-} from '@angular/material/table';
+import {Component, computed, effect, inject} from '@angular/core';
+import {MatFormFieldModule, MatError} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {MatError} from '@angular/material/form-field';
-import {MatSort, MatSortHeader} from '@angular/material/sort';
-import {MatPaginator} from '@angular/material/paginator';
 
 import {AnalyticsStore} from '../../../application/analytics.store';
-import {ManagementStore} from '../../../../management/application/mangament-store';
+import {ManagementStore} from '../../../../management/application/management-store';
+import {SessionStore} from '../../../../shared/application/session-store';
 
-interface DeviceSummary {
+interface DeviceConsumptionRow {
   deviceId: number;
   deviceName: string;
-  totalKwh: number;
-  lastDate: string;
+  totalConsumption: number;
 }
 
 @Component({
   selector: 'app-dashboard',
-  imports: [
-    MatTable, MatHeaderCellDef, MatCellDef, MatColumnDef,
-    MatHeaderCell, MatCell, MatHeaderRowDef, MatRowDef,
-    MatHeaderRow, MatRow,
-    MatProgressSpinner, MatError,
-    MatSort, MatSortHeader, MatPaginator,
-  ],
+  imports: [MatFormFieldModule, MatError, MatSelectModule, MatTableModule, MatProgressSpinner],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard implements AfterViewChecked {
+export class Dashboard {
   readonly store = inject(AnalyticsStore);
   readonly managementStore = inject(ManagementStore);
+  readonly session = inject(SessionStore);
 
-  displayedColumns = ['deviceName', 'totalKwh', 'lastDate'];
+  displayedColumns = ['deviceName', 'totalConsumption'];
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  readonly activeDeviceCount = computed(() =>
-    this.managementStore.devices().filter(d => d.status === 'on').length
+  readonly rows = computed((): DeviceConsumptionRow[] =>
+    Array.from(this.store.metricsByDevice().entries()).map(([deviceId, total]) => ({
+      deviceId,
+      deviceName: this.deviceName(deviceId),
+      totalConsumption: Math.round(total * 100) / 100,
+    }))
   );
 
-  readonly deviceSummaries = computed((): DeviceSummary[] => {
-    const consumptions = this.store.consumptions();
-    const kwhMap = this.store.kwhByDevice();
-    const dateMap = new Map<number, string>();
-
-    for (const c of consumptions) {
-      const existing = dateMap.get(c.deviceId);
-      if (!existing || c.date > existing) {
-        dateMap.set(c.deviceId, c.date);
+  constructor() {
+    // Load metrics and the property's devices whenever the selected property changes.
+    effect(() => {
+      const propertyId = this.session.selectedPropertyId();
+      if (propertyId) {
+        this.store.loadMetrics(propertyId);
+        const property = this.managementStore.getPropertyById(propertyId)();
+        if (property) this.managementStore.loadDevicesForProperty(property);
       }
-    }
+    });
+  }
 
-    return Array.from(kwhMap.entries()).map(([deviceId, totalKwh]) => ({
-      deviceId,
-      deviceName: this.store.getDeviceName(deviceId),
-      totalKwh: Math.round(totalKwh * 100) / 100,
-      lastDate: dateMap.get(deviceId) ?? '—',
-    }));
-  });
+  selectProperty(propertyId: number): void {
+    this.session.selectProperty(propertyId);
+  }
 
-  dataSource = computed(() => {
-    const source = new MatTableDataSource(this.deviceSummaries());
-    source.sort = this.sort;
-    source.paginator = this.paginator;
-    return source;
-  });
-
-  ngAfterViewChecked() {
-    if (this.dataSource().sort !== this.sort) {
-      this.dataSource().sort = this.sort;
-    }
-    if (this.dataSource().paginator !== this.paginator) {
-      this.dataSource().paginator = this.paginator;
-    }
+  private deviceName(deviceId: number): string {
+    if (!deviceId) return 'Property-level';
+    const device = this.managementStore.propertyDevices().find(d => d.id === deviceId);
+    return device?.name ?? `Device #${deviceId}`;
   }
 }

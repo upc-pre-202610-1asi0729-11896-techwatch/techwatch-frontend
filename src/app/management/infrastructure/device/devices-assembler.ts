@@ -8,26 +8,30 @@ export class DevicesAssembler implements BaseAssembler<DeviceEntity, DevicesReso
   toEntityFromResource(resource: DevicesResource): DeviceEntity {
     return new DeviceEntity({
       id: resource.id,
+      spaceId: resource.spaceId,
       name: resource.name,
+      brand: resource.brand,
+      model: resource.model,
       type: resource.type,
-      powerWatts: resource.powerWatts,
       status: resource.status,
-      homeId: resource.homeId,
+      powerWatts: resource.powerWatts,
     });
   }
 
   toResourceFromEntity(entity: DeviceEntity): DevicesResource {
     return {
       id: entity.id,
+      spaceId: entity.spaceId,
       name: entity.name,
+      brand: entity.brand,
+      model: entity.model,
       type: entity.type,
-      powerWatts: entity.powerWatts,
       status: entity.status,
-      homeId: entity.homeId,
+      powerWatts: entity.powerWatts,
     } as DevicesResource;
   }
 
   toEntitiesFromResponse(response: DevicesResponse): DeviceEntity[] {
-    return response.devices.map(resource => this.toEntityFromResource(resource as DevicesResource));
+    return response.devices.map(resource => this.toEntityFromResource(resource));
   }
 }

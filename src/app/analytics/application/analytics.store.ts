@@ -1,28 +1,32 @@
-import {computed, Injectable, signal} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {retry} from 'rxjs';
-import {Consumption} from '../domain/model/consumption.entity';
-import {AnalyticsApi} from '../infrastructure/analytics-api';
-import {ManagementStore} from '../../management/application/mangament-store';
 
+import {SessionStore} from '../../shared/application/session-store';
+import {ConsumptionMetric} from '../domain/model/consumption-metric.entity';
+import {ConsumptionAlert} from '../domain/model/consumption-alert.entity';
+import {ConsumptionReport} from '../domain/model/consumption-report.entity';
+import {AnalyticsApi} from '../infrastructure/analytics-api';
+import {GenerateReportRequest} from '../infrastructure/analytics-resources';
+
+/**
+ * Application store for the Analytics context: metrics and reports of the
+ * selected property, and alerts of the current user.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AnalyticsStore {
-  readonly totalKwh = computed(() =>
-    Math.round(this.consumptions().reduce((sum, c) => sum + c.kwh, 0) * 100) / 100
-  );
+  private readonly analyticsApi = inject(AnalyticsApi);
+  private readonly session = inject(SessionStore);
 
-  readonly kwhByDevice = computed(() => {
-    const map = new Map<number, number>();
-    for (const c of this.consumptions()) {
-      map.set(c.deviceId, (map.get(c.deviceId) ?? 0) + c.kwh);
-    }
-    return map;
-  });
+  private readonly metricsSignal = signal<ConsumptionMetric[]>([]);
+  readonly metrics = this.metricsSignal.asReadonly();
 
-  private readonly consumptionsSignal = signal<Consumption[]>([]);
-  readonly consumptions = this.consumptionsSignal.asReadonly();
+  private readonly alertsSignal = signal<ConsumptionAlert[]>([]);
+  readonly alerts = this.alertsSignal.asReadonly();
+
+  private readonly reportsSignal = signal<ConsumptionReport[]>([]);
+  readonly reports = this.reportsSignal.asReadonly();
 
   private readonly loadingSignal = signal<boolean>(false);
   readonly loading = this.loadingSignal.asReadonly();
@@ -30,43 +34,88 @@ export class AnalyticsStore {
   private readonly errorSignal = signal<string | null>(null);
   readonly error = this.errorSignal.asReadonly();
 
-  constructor(
-    private analyticsApi: AnalyticsApi,
-    private managementStore: ManagementStore
-  ) {
-    this.loadConsumptions();
+  readonly totalConsumption = computed(() =>
+    Math.round(this.metrics().reduce((sum, m) => sum + m.value, 0) * 100) / 100
+  );
+
+  readonly unreadAlertCount = computed(() => this.alerts().filter(a => !a.isRead).length);
+
+  readonly metricsByDevice = computed(() => {
+    const map = new Map<number, number>();
+    for (const metric of this.metrics()) {
+      const key = metric.deviceId ?? 0;
+      map.set(key, (map.get(key) ?? 0) + metric.value);
+    }
+    return map;
+  });
+
+  constructor() {
+    this.loadAlerts();
   }
 
-  getDeviceName(deviceId: number): string {
-    const device = this.managementStore.devices().find(d => d.id === deviceId);
-    return device?.name ?? `Device #${deviceId}`;
-  }
-
-  addConsumption(consumption: Consumption): void {
+  loadMetrics(propertyId: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.analyticsApi.createConsumption(consumption).pipe(retry(2)).subscribe({
-      next: created => {
-        this.consumptionsSignal.update(list => [...list, created]);
+    this.analyticsApi.getMetricsByPropertyId(propertyId).pipe(retry(2)).subscribe({
+      next: metrics => {
+        this.metricsSignal.set(metrics);
         this.loadingSignal.set(false);
       },
       error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to create consumption'));
+        this.errorSignal.set(this.formatError(err, 'Failed to load metrics'));
         this.loadingSignal.set(false);
       }
     });
   }
 
-  private loadConsumptions(): void {
+  loadReports(propertyId: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.analyticsApi.getConsumptions().pipe(takeUntilDestroyed()).subscribe({
-      next: consumptions => {
-        this.consumptionsSignal.set(consumptions);
+    this.analyticsApi.getReportsByPropertyId(propertyId).pipe(retry(2)).subscribe({
+      next: reports => {
+        this.reportsSignal.set(reports);
         this.loadingSignal.set(false);
       },
       error: err => {
-        this.errorSignal.set(this.formatError(err, 'Failed to load consumptions'));
+        this.errorSignal.set(this.formatError(err, 'Failed to load reports'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  loadAlerts(): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.analyticsApi.getAlertsByUserId(this.session.userId).pipe(retry(2)).subscribe({
+      next: alerts => {
+        this.alertsSignal.set(alerts);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to load alerts'));
+        this.loadingSignal.set(false);
+      }
+    });
+  }
+
+  markAlertAsRead(alertId: number): void {
+    this.analyticsApi.markAlertAsRead(alertId).subscribe({
+      next: updated => this.alertsSignal.update(alerts => alerts.map(a => a.id === updated.id ? updated : a)),
+      error: err => this.errorSignal.set(this.formatError(err, 'Failed to mark alert as read')),
+    });
+  }
+
+  generateReport(propertyId: number, startDate: string, endDate: string): void {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    const request: GenerateReportRequest = {userId: this.session.userId, propertyId, startDate, endDate};
+    this.analyticsApi.generateReport(request).subscribe({
+      next: report => {
+        this.reportsSignal.update(reports => [report, ...reports]);
+        this.loadingSignal.set(false);
+      },
+      error: err => {
+        this.errorSignal.set(this.formatError(err, 'Failed to generate report'));
         this.loadingSignal.set(false);
       }
     });
