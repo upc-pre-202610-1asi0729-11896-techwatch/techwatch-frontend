@@ -1,0 +1,118 @@
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.session-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+}
+
+.session-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.session-property {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.session-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.session-total {
+  display: flex;
+  flex-direction: column;
+}
+
+.total-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.total-unit {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 12px 0;
+}
+
+.action-form {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sim-table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.start-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 480px;
+}
+
+.start-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.empty {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
