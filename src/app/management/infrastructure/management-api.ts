@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 import {BaseApi} from '../../shared/interface/base-api';
 
-import {HomeApiEndpoints} from './home/home-api-endpoints';
-import {HomeEntity} from '../domain/models/home/home-entity';
+import {PropertyEntity} from '../domain/models/property/property-entity';
+import {SpaceEntity} from '../domain/models/property/space-entity';
+import {PropertiesApiEndpoints} from './property/properties-api-endpoints';
 
 import {DeviceEntity} from '../domain/models/device/device-entity';
 import {DevicesApiEndpoints} from './device/devices-api-endpoints';
@@ -14,38 +15,35 @@ import {DevicesApiEndpoints} from './device/devices-api-endpoints';
   providedIn: 'root',
 })
 export class ManagementApi extends BaseApi {
-  private readonly homeEndpoint: HomeApiEndpoints;
+  private readonly propertyEndpoint: PropertiesApiEndpoints;
   private readonly deviceEndpoint: DevicesApiEndpoints;
 
   constructor(http: HttpClient) {
     super();
-    this.homeEndpoint = new HomeApiEndpoints(http);
+    this.propertyEndpoint = new PropertiesApiEndpoints(http);
     this.deviceEndpoint = new DevicesApiEndpoints(http);
   }
-  //
-  // Homes
-  getHomes(): Observable<HomeEntity[]> {
-    return this.homeEndpoint.getAll();
+
+  // Properties
+  getPropertiesByUserId(userId: number): Observable<PropertyEntity[]> {
+    return this.propertyEndpoint.getByUserId(userId);
   }
 
-  getHome(id: number): Observable<HomeEntity> {
-    return this.homeEndpoint.getById(id);
+  getProperty(id: number): Observable<PropertyEntity> {
+    return this.propertyEndpoint.getById(id);
   }
 
-  createHome(home: HomeEntity): Observable<HomeEntity> {
-    return this.homeEndpoint.create(home);
+  createProperty(property: PropertyEntity): Observable<PropertyEntity> {
+    return this.propertyEndpoint.create(property);
   }
 
-  updateHome(home: HomeEntity): Observable<HomeEntity> {
-    return this.homeEndpoint.update(home, home.id);
+  createSpace(propertyId: number, name: string, description: string): Observable<SpaceEntity> {
+    return this.propertyEndpoint.createSpace(propertyId, name, description);
   }
 
-  deleteHome(id: number): Observable<void> {
-    return this.homeEndpoint.delete(id);
-  }
   // Devices
-  getDevices(): Observable<DeviceEntity[]> {
-    return this.deviceEndpoint.getAll();
+  getDevicesBySpaceId(spaceId: number): Observable<DeviceEntity[]> {
+    return this.deviceEndpoint.getBySpaceId(spaceId);
   }
 
   getDevice(id: number): Observable<DeviceEntity> {
