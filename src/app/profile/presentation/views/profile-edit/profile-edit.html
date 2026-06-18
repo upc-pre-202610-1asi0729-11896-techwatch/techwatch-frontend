@@ -1,0 +1,65 @@
+<div class="page-header">
+  <div>
+    <h2 class="page-title">My Profile</h2>
+    <p class="page-subtitle">View and update your account information.</p>
+  </div>
+</div>
+
+@if (store.loading()) {
+  <mat-spinner diameter="36"></mat-spinner>
+}
+@if (store.error()) {
+  <p class="form-error">{{ store.error() }}</p>
+}
+
+@if (store.profile(); as profile) {
+  <div class="profile-meta">
+    <span class="meta-item">Member since {{ profile.createdAt | date:'mediumDate' }}</span>
+    @if (profile.isPremium && profile.subscription) {
+      <span class="meta-item premium-badge">Premium until {{ profile.subscription.expiresAt | date:'mediumDate' }}</span>
+    }
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+        @if (form.get('name')!.touched && form.get('name')!.hasError('required')) {
+          <mat-error>Name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email">
+        @if (form.get('email')!.touched && form.get('email')!.hasError('required')) {
+          <mat-error>Email is required</mat-error>
+        }
+        @if (form.get('email')!.touched && form.get('email')!.hasError('email')) {
+          <mat-error>Enter a valid email</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Plan</mat-label>
+        <mat-select formControlName="plan">
+          @for (plan of plans; track plan) {
+            <mat-option [value]="plan">{{ plan | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit"
+                [disabled]="form.invalid || store.saving()">
+          @if (store.saving()) {
+            Saving...
+          } @else {
+            Save Changes
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+}

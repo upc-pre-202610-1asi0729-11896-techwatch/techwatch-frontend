@@ -9,4 +9,6 @@ export const environment = {
   metricsEndpointPath: '/metrics',
   alertsEndpointPath: '/alerts',
   reportsEndpointPath: '/reports',
+  authEndpointPath: '/auth',
+  usersEndpointPath: '/users',
 };

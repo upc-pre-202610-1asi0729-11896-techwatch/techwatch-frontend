@@ -1,0 +1,62 @@
+<div class="form-container">
+  <h2 class="form-title">Create Account</h2>
+  <p class="form-subtitle">Register to start monitoring your properties.</p>
+
+  @if (store.loading()) {
+    <mat-spinner diameter="36"></mat-spinner>
+  }
+  @if (store.error()) {
+    <p class="form-error">{{ store.error() }}</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="Your full name">
+      @if (form.get('name')!.touched && form.get('name')!.hasError('required')) {
+        <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" placeholder="you@example.com">
+      @if (form.get('email')!.touched && form.get('email')!.hasError('required')) {
+        <mat-error>Email is required</mat-error>
+      }
+      @if (form.get('email')!.touched && form.get('email')!.hasError('email')) {
+        <mat-error>Enter a valid email</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
+      @if (form.get('password')!.touched && form.get('password')!.hasError('required')) {
+        <mat-error>Password is required</mat-error>
+      }
+      @if (form.get('password')!.touched && form.get('password')!.hasError('minlength')) {
+        <mat-error>Password must be at least 6 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Plan</mat-label>
+      <mat-select formControlName="plan">
+        @for (plan of plans; track plan) {
+          <mat-option [value]="plan">{{ plan | titlecase }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || store.loading()">
+        Register
+      </button>
+    </div>
+  </form>
+
+  <p class="form-footer">
+    Already have an account? <a routerLink="/iam/login">Sign In</a>
+  </p>
+</div>

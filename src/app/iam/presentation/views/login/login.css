@@ -1,0 +1,47 @@
+.form-container {
+  padding: 24px;
+  max-width: 480px;
+}
+
+.form-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.form-subtitle {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.form-error {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  display: block;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.form-footer {
+  margin-top: 24px;
+  color: #6b7280;
+}
+
+.form-footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}

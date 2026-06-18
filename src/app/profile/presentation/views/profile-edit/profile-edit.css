@@ -1,0 +1,57 @@
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 4px;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.meta-item {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.premium-badge {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.form-container {
+  padding: 0;
+  max-width: 480px;
+}
+
+.form-error {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  display: block;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
